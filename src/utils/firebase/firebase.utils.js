@@ -65,13 +65,9 @@ const firebaseConfig = {
     const q = query(collectionRef);
   
     const querySnapshot = await getDocs(q);
-    const categoryMap = querySnapshot.docs.reduce((acc, docSnapshot) => {
-      const { title, items } = docSnapshot.data();
-      acc[title.toLowerCase()] = items;
-      return acc;
-    }, {});
+    const categoriesArray = querySnapshot.docs.map((docSnapShot) => docSnapShot.data())
   
-    return categoryMap;
+    return categoriesArray;
   };
 
   export const createUserDocumentFromAuth = async (
@@ -81,11 +77,8 @@ const firebaseConfig = {
     if (!userAuth) return;
     
     const userDocRef = doc(db, 'users', userAuth.uid)
-    console.log(userDocRef)
 
     const userSnapshot = await getDoc(userDocRef)
-
-    console.log(userSnapshot)
 
     if(!userSnapshot.exists()) {
         const {displayName, email} = userAuth
