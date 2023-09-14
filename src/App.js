@@ -11,12 +11,15 @@ import { useDispatch } from 'react-redux';
 import { useNavigate } from "react-router-dom";
 import { clearCart } from './store/cart/cart.action';
 import { setIsCartOpen } from './store/cart/cart.action';
+import { useLocation } from 'react-router-dom';
 
 
 
 const App = () => {
   const dispatch  = useDispatch()
   const navigate = useNavigate()
+  const location = useLocation()
+  console.log(location.pathname)
   useEffect(()=>{
     const unsubscribe = onAuthStateChangedListner((user)=>{
      if(user) {
@@ -24,7 +27,11 @@ const App = () => {
      }
      dispatch(setCurrentUser(user))
      if(user ) {
-      navigate('/')
+        if(location.pathname === '/auth') {
+          navigate('/')
+        } else{
+          navigate(location.pathname)
+        }
      }
      else {
       navigate('/auth')
