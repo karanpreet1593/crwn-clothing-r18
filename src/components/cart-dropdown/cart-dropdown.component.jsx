@@ -8,13 +8,17 @@ import {
     EmptyMessage,
     CartItems,
   } from './cart-dropdown.styles';
+  import { setIsCartOpen } from '../../store/cart/cart.action';
+  import { useDispatch } from 'react-redux';
 
 const CartDropdown = () => {
     const cartItems = useSelector(selectCartItems)
     const navigate = useNavigate();
+    const dispatch = useDispatch()
 
     const goToCheckoutHandler = () => {
         navigate('/checkout')
+        dispatch(setIsCartOpen(false))
     }
 
     return (

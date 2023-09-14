@@ -8,18 +8,29 @@ import { useEffect } from "react";
 import { onAuthStateChangedListner, createUserDocumentFromAuth } from "./utils/firebase/firebase.utils";
 import { setCurrentUser } from './store/user/user.action';
 import { useDispatch } from 'react-redux';
+import { useNavigate } from "react-router-dom";
+import { clearCart } from './store/cart/cart.action';
+import { setIsCartOpen } from './store/cart/cart.action';
 
 
 
 const App = () => {
   const dispatch  = useDispatch()
-
+  const navigate = useNavigate()
   useEffect(()=>{
     const unsubscribe = onAuthStateChangedListner((user)=>{
      if(user) {
          createUserDocumentFromAuth(user)
      }
      dispatch(setCurrentUser(user))
+     if(user ) {
+      navigate('/')
+     }
+     else {
+      navigate('/auth')
+      dispatch(setIsCartOpen(false))
+      dispatch(clearCart())
+     }
     })
     return unsubscribe
  }, [])
